@@ -12,12 +12,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
-import Logo from "@/app/assets/svgs/Logo";
 import NMImageUploader from "@/components/ui/core/NMImageUploader";
 import { useState } from "react";
 import ImagePreviewer from "@/components/ui/core/NMImageUploader/ImagePreviewer";
 import { createShop } from "@/services/Shop";
 import { toast } from "sonner";
+import Logo from "@/assets/svgs/Logo";
 
 export default function CreateShopForm() {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
@@ -52,6 +52,8 @@ export default function CreateShopForm() {
 
       if (res.success) {
         toast.success(res.message);
+      } else {
+        toast.error(res.message);
       }
     } catch (err: any) {
       console.error(err);

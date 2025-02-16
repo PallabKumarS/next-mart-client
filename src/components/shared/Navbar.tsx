@@ -23,8 +23,6 @@ export default function Navbar() {
     setLoading(true);
   };
 
-  console.log(user);
-
   return (
     <header className="border-b w-full">
       <div className="container flex justify-between items-center mx-auto h-16 px-3">
