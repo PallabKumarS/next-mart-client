@@ -37,7 +37,7 @@ export const loginUser = async (UserData: FieldValues) => {
 
     const result = await res.json();
     if (result?.success) {
-      (await cookies()).set("accessToken", result?.accessToken);
+      (await cookies()).set("accessToken", result?.data?.accessToken);
     }
 
     return result;
@@ -52,6 +52,7 @@ export const getCurrentUser = async () => {
 
   if (accessToken) {
     decodedData = await jwtDecode(accessToken);
+    console.log(decodedData);
     return decodedData;
   } else {
     return null;
@@ -72,6 +73,14 @@ export const recaptchaTokenVerify = async (token: string) => {
     });
 
     return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+
+export const Logout = async () => {
+  try {
+    (await cookies()).delete("accessToken");
   } catch (error: any) {
     return Error(error);
   }
