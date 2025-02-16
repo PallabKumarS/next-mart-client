@@ -19,7 +19,7 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import { Logout } from "@/services/auth/auth.service";
-import { protectedRoutes } from "@/constants";
+import { config } from "@/middleware";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -32,7 +32,7 @@ export function NavUser() {
     Logout();
     setLoading(true);
 
-    if (protectedRoutes.some((route) => pathname.match(route))) {
+    if (config.matcher.some((route) => pathname.match(route))) {
       router.push("/");
     }
   };

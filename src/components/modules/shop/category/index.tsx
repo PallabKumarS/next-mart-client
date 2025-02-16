@@ -1,10 +1,11 @@
 "use client";
-import { ICategory } from "@/types";
+
 import CreateCategoryModal from "./CreateCategoryModal";
 import { NMTable } from "@/components/ui/core/NMTable";
 import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import { Trash } from "lucide-react";
+import { ICategory } from "@/types/category.type";
 
 type TCategoriesProps = {
   categories: ICategory[];
@@ -66,7 +67,7 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-10">
         <h1 className="text-xl font-bold">Manage Categories</h1>
         <CreateCategoryModal />
       </div>

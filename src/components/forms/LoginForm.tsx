@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
@@ -18,6 +18,7 @@ import { PasswordInput } from "../ui/password-input";
 import { loginUser, recaptchaTokenVerify } from "@/services/auth/auth.service";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 // import Image from "next/image";
 // import { motion } from "framer-motion";
 // import { cn } from "@/lib/utils";
@@ -31,6 +32,10 @@ const formSchema = z.object({
 });
 
 export default function LoginForm() {
+  const searchParams = useSearchParams();
+  const redirectPath = searchParams.get("redirectPath");
+  const router = useRouter();
+
   const [recaptchaStatus, setRecaptchaStatus] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -41,12 +46,26 @@ export default function LoginForm() {
     formState: { isSubmitting },
   } = useForm();
 
+  const handleRecaptchaChange = async (value: string | null) => {
+    try {
+      const res = await recaptchaTokenVerify(value as string);
+      setRecaptchaStatus(res?.success);
+    } catch (err: any) {
+      console.error(err);
+    }
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const toastId = toast.loading("logging in...");
     try {
       const res = await loginUser(values);
       if (res?.success) {
         toast.success(res?.message, { id: toastId });
+        if (redirectPath) {
+          router.push(redirectPath);
+        } else {
+          router.push("/dashboard");
+        }
       } else {
         toast.error(res?.message, { id: toastId });
       }
@@ -55,16 +74,6 @@ export default function LoginForm() {
       toast.error("Failed to submit the form. Please try again.");
     }
   }
-
-  const handleRecaptchaChange = async (value: string | null) => {
-    try {
-      const res = await recaptchaTokenVerify(value as string);
-      setRecaptchaStatus(res?.success);
-      console.log("Recaptcha status:", res?.success);
-    } catch (err: any) {
-      console.error(err);
-    }
-  };
 
   return (
     <Form {...form}>
