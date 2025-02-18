@@ -1,10 +1,10 @@
-export type TUser = {
+export interface IUser {
   userId: string;
   name: string;
   email: string;
-  role: "user" | "admin";
   hasShop?: boolean;
   isActive?: boolean;
+  role: "user" | "admin";
   iat?: number;
   exp?: number;
-};
+}

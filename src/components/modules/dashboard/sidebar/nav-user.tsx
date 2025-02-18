@@ -16,8 +16,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { usePathname, useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
+import { usePathname, useRouter } from "next/navigation";
 import { Logout } from "@/services/auth/auth.service";
 import { config } from "@/middleware";
 
