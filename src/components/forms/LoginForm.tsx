@@ -15,10 +15,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { PasswordInput } from "../ui/password-input";
-import { loginUser, recaptchaTokenVerify } from "@/services/auth/auth.service";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { loginUser, reCaptchaTokenVerification } from "@/services/AuthService";
 // import Image from "next/image";
 // import { motion } from "framer-motion";
 // import { cn } from "@/lib/utils";
@@ -48,7 +48,7 @@ export default function LoginForm() {
 
   const handleRecaptchaChange = async (value: string | null) => {
     try {
-      const res = await recaptchaTokenVerify(value as string);
+      const res = await reCaptchaTokenVerification(value as string);
       setRecaptchaStatus(res?.success);
     } catch (err: any) {
       console.error(err);

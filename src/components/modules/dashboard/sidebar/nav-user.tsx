@@ -18,8 +18,8 @@ import {
 } from "@/components/ui/sidebar";
 import { useUser } from "@/context/UserContext";
 import { usePathname, useRouter } from "next/navigation";
-import { Logout } from "@/services/auth/auth.service";
 import { config } from "@/middleware";
+import { logout } from "@/services/AuthService";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -29,7 +29,7 @@ export function NavUser() {
   const pathname = usePathname();
 
   const handleLogout = () => {
-    Logout();
+    logout();
     setLoading(true);
 
     if (config.matcher.some((route) => pathname.match(route))) {

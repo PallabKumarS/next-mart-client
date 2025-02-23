@@ -1,5 +1,5 @@
-import { getCurrentUser } from "@/services/auth/auth.service";
-import { TUser } from "@/types/user.type";
+import { getCurrentUser } from "@/services/AuthService";
+import { IUser } from "@/types";
 import {
   createContext,
   Dispatch,
@@ -11,16 +11,16 @@ import {
 } from "react";
 
 type TUserContextValues = {
-  user: TUser | null;
+  user: IUser | null;
   loading: boolean;
-  setUser: (user: TUser | null) => void;
+  setUser: (user: IUser | null) => void;
   setLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 const UserContext = createContext<TUserContextValues | undefined>(undefined);
 
 const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<TUser | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   const handleUser = async () => {

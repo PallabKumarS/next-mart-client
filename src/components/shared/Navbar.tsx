@@ -12,10 +12,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Logout } from "@/services/auth/auth.service";
 import { useUser } from "@/context/UserContext";
 import { usePathname, useRouter } from "next/navigation";
 import { config } from "@/middleware";
+import { logout } from "@/services/AuthService";
 
 export default function Navbar() {
   const { user, setLoading } = useUser();
@@ -23,7 +23,7 @@ export default function Navbar() {
   const router = useRouter();
 
   const handleLogout = () => {
-    Logout();
+    logout();
     setLoading(true);
     if (config.matcher.some((route) => pathname.match(route))) {
       router.push("/login");
@@ -31,8 +31,8 @@ export default function Navbar() {
   };
 
   return (
-    <header className="border-b w-full">
-      <div className="container flex justify-between items-center mx-auto h-16 px-3">
+    <header className="border-b bg-background w-full sticky top-0 z-10">
+      <div className="container flex justify-between items-center mx-auto h-16 px-5">
         <h1 className="text-2xl font-black flex items-center">
           <Logo />
           Next Mart
@@ -48,11 +48,13 @@ export default function Navbar() {
           <Button variant="outline" className="rounded-full p-0 size-10">
             <Heart />
           </Button>
-          <Button variant="outline" className="rounded-full p-0 size-10">
-            <ShoppingBag />
-          </Button>
+          <Link href="/cart">
+            <Button variant="outline" className="rounded-full p-0 size-10">
+              <ShoppingBag />
+            </Button>
+          </Link>
 
-          {user ? (
+          {user?.email ? (
             <>
               {/* create shop button  */}
               <Link href={"/create-shop"}>
