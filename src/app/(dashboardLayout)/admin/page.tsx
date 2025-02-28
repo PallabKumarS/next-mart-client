@@ -1,9 +1,9 @@
-const AdminDashboardPage = () => {
+const AdminHomePage = () => {
   return (
     <div>
-      <h1>This is AdminDashboardPage Component</h1>
+      <h1>Admin Home Page</h1>
     </div>
   );
 };
 
-export default AdminDashboardPage;
+export default AdminHomePage;

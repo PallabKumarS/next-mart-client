@@ -4,7 +4,7 @@ import { getAllCategories } from "@/services/Category";
 const ProductCategoryPage = async () => {
   const { data, meta } = await getAllCategories();
   return (
-    <div className="">
+    <div>
       <ManageCategories categories={data} />
     </div>
   );

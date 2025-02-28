@@ -1,26 +1,26 @@
 "use client";
 
+import { Checkbox } from "@/components/ui/checkbox";
 import { NMTable } from "@/components/ui/core/NMTable/index";
+import TablePagination from "@/components/ui/core/NMTable/TablePagination";
 import { IMeta, IProduct } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
-import { Edit, Eye, Plus, Trash } from "lucide-react";
+import { Edit, Eye, Trash } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
-import DiscountModal from "./DiscountModal";
-import TablePagination from "@/components/ui/core/NMTable/TablePagination";
 
-const ManageProducts = ({
-  products,
+const CouponTable = ({
+  coupons,
   meta,
 }: {
-  products: IProduct[];
+  coupons: IProduct[];
   meta: IMeta;
 }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedProductsId, setSelectedProductsId] = useState<string[]>([]);
+
   const router = useRouter();
-  const [selectedIds, setSelectedIds] = useState<string[] | []>([]);
 
   const handleView = (product: IProduct) => {
     console.log("Viewing product:", product);
@@ -39,7 +39,9 @@ const ManageProducts = ({
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() && "indeterminate")
           }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          onCheckedChange={(value) => {
+            table.toggleAllPageRowsSelected(!!value);
+          }}
           aria-label="Select all"
         />
       ),
@@ -48,12 +50,13 @@ const ManageProducts = ({
           checked={row.getIsSelected()}
           onCheckedChange={(value) => {
             if (value) {
-              setSelectedIds((prev) => [...prev, row.original._id]);
+              setSelectedProductsId([...selectedProductsId, row.original._id]);
             } else {
-              setSelectedIds(
-                selectedIds.filter((id) => id !== row.original._id)
+              setSelectedProductsId(
+                selectedProductsId.filter((id) => id !== row.original._id)
               );
             }
+
             row.toggleSelected(!!value);
           }}
           aria-label="Select row"
@@ -62,7 +65,6 @@ const ManageProducts = ({
       enableSorting: false,
       enableHiding: false,
     },
-
     {
       accessorKey: "name",
       header: "Product Name",
@@ -125,9 +127,7 @@ const ManageProducts = ({
             className="text-gray-500 hover:text-green-500"
             title="Edit"
             onClick={() =>
-              router.push(
-                `/user/shop/products/update-product/${row.original._id}`
-              )
+              router.push(`/user/shop/update-product/${row.original._id}`)
             }
           >
             <Edit className="w-5 h-5" />
@@ -146,26 +146,15 @@ const ManageProducts = ({
   ];
 
   return (
-    <div>
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">Manage Products</h1>
-        <div className="flex items-center gap-2">
-          <Button
-            onClick={() => router.push("/user/shop/products/add-product")}
-            size="sm"
-          >
-            Add Product <Plus />
-          </Button>
-          <DiscountModal
-            selectedIds={selectedIds}
-            setSelectedIds={setSelectedIds}
-          />
-        </div>
-      </div>
-      <NMTable columns={columns} data={products || []} />
-      <TablePagination totalPage={meta?.totalPage} />
+    <div className="my-5">
+      <NMTable columns={columns} data={coupons || []} />
+      <TablePagination
+        currentPage={currentPage}
+        totalPages={meta?.totalPage}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };
 
-export default ManageProducts;
+export default CouponTable;

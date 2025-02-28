@@ -18,8 +18,8 @@ import {
 } from "@/components/ui/sidebar";
 import { useUser } from "@/context/UserContext";
 import { usePathname, useRouter } from "next/navigation";
-import { config } from "@/middleware";
 import { logout } from "@/services/AuthService";
+import { config } from "@/middleware";
 
 export function NavUser() {
   const { isMobile } = useSidebar();

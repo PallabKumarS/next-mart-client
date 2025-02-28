@@ -1,5 +1,5 @@
 "use client";
-
+import { ICategory } from "@/types";
 import CreateCategoryModal from "./CreateCategoryModal";
 import { NMTable } from "@/components/ui/core/NMTable";
 import { ColumnDef } from "@tanstack/react-table";
@@ -9,7 +9,6 @@ import { useState } from "react";
 import DeleteConfirmationModal from "@/components/ui/core/NMModal/DeleteConfirmationModal";
 import { toast } from "sonner";
 import { deleteCategory } from "@/services/Category";
-import { ICategory } from "@/types";
 
 type TCategoriesProps = {
   categories: ICategory[];
@@ -21,7 +20,6 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
   const handleDelete = (data: ICategory) => {
-    console.log(data);
     setSelectedId(data?._id);
     setSelectedItem(data?.name);
     setModalOpen(true);
